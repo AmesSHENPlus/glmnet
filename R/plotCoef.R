@@ -1,4 +1,5 @@
-plotCoef=function(beta,norm,lambda,df,dev,label=FALSE,xvar=c("norm","lambda","dev"),xlab=iname,ylab="Coefficients",...){
+plotCoef=function(beta,norm,lambda,df,dev,label=FALSE,xvar=c("norm","lambda","dev"),
+                  xlab=iname,ylab="Coefficients",sign.lambda=-1,...){
   ##beta should be in "dgCMatrix" format
   which=nonzeroCoef(beta)
   nwhich=length(which)
@@ -18,10 +19,16 @@ plotCoef=function(beta,norm,lambda,df,dev,label=FALSE,xvar=c("norm","lambda","de
       approx.f=1
     },
     "lambda"={
-      index=log(lambda)
-      iname= expression(Log(lambda))
-      ##iname = "Log Lambda"
-      approx.f=0
+        if(sign.lambda<0){
+            index=-log(lambda)
+            iname= expression(-Log(lambda))
+            approx.f=1
+        }
+        else{
+            index=log(lambda)
+            iname= expression(Log(lambda))
+            approx.f=0
+        }
     },
     "dev"= {
       index=dev
@@ -44,7 +51,7 @@ plotCoef=function(beta,norm,lambda,df,dev,label=FALSE,xvar=c("norm","lambda","de
    nnz=length(which)
    xpos=max(index)
    pos=4
-   if(xvar=="lambda"){
+   if(xvar=="lambda"&sign.lambda==1){
      xpos=min(index)
      pos=2
    }

@@ -1,7 +1,8 @@
 #' @method plot multnet
 #' @rdname plot.glmnet
 #' @export
-plot.multnet=function(x, xvar=c("lambda","norm","dev"),label=FALSE,type.coef=c("coef","2norm"),...){
+plot.multnet=function(x, xvar=c("lambda","norm","dev"),
+                      label=FALSE, sign.lambda=-1, type.coef=c("coef","2norm"),...){
   xvar=match.arg(xvar)
   type.coef=match.arg(type.coef)
     beta=x$beta
@@ -18,12 +19,12 @@ plot.multnet=function(x, xvar=c("lambda","norm","dev"),label=FALSE,type.coef=c("
     ncl=nrow(dfmat)
     clnames=rownames(dfmat)
     for( i in seq(ncl)){
-      plotCoef(beta[[i]],norm,x$lambda,dfmat[i,],x$dev.ratio,label=label,xvar=xvar,ylab=paste("Coefficients: Response",clnames[i]),...)
+      plotCoef(beta[[i]],norm,x$lambda,dfmat[i,],x$dev.ratio,label=label,xvar=xvar,sign.lambda=sign.lambda,ylab=paste("Coefficients: Response",clnames[i]),...)
     }
   }
   else {
     dfseq=round(apply(dfmat,2,mean),1)
-    plotCoef(coefnorm(beta,2),norm,x$lambda,dfseq,x$dev.ratio,label=label,xvar=xvar,ylab="Coefficient 2Norms",...)
+    plotCoef(coefnorm(beta,2),norm,x$lambda,dfseq,x$dev.ratio,label=label,xvar=xvar,sign.lambda=sign.lambda, ylab="Coefficient 2Norms",...)
   }
 
   }

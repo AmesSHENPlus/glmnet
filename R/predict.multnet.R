@@ -29,13 +29,15 @@ predict.multnet <-
   if (!is.null(s)) {
     lambda = object$lambda
     lamlist = lambda.interp(lambda, s)
+    namess=names(s)
+    if(is.null(namess))namess=paste0("s=",format(s))
     for (i in seq(nclass)) {
       kbeta = methods::rbind2(a0[i, , drop = FALSE], nbeta[[i]])#was rbind2
       vnames = dimnames(kbeta)[[1]]
       dimnames(kbeta) = list(NULL, NULL)
       kbeta = kbeta[, lamlist$left, drop = FALSE] %*% Diagonal(x=lamlist$frac) +
         kbeta[, lamlist$right, drop = FALSE] %*% Diagonal(x=1 - lamlist$frac)
-      dimnames(kbeta) = list(vnames, paste(seq(along = s)))
+      dimnames(kbeta) = list(vnames, namess)
       nbeta[[i]] = kbeta
     }
   }

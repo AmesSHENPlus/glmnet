@@ -5,15 +5,15 @@
 \alias{plot.cv.relaxed}
 \title{plot the cross-validation curve produced by cv.glmnet}
 \usage{
-\method{plot}{cv.glmnet}(x, sign.lambda = 1, ...)
+\method{plot}{cv.glmnet}(x, sign.lambda = -1, ...)
 
-\method{plot}{cv.relaxed}(x, se.bands = TRUE, ...)
+\method{plot}{cv.relaxed}(x, se.bands = TRUE, sign.lambda = -1, ...)
 }
 \arguments{
 \item{x}{fitted \code{"cv.glmnet"} object}
 
-\item{sign.lambda}{Either plot against \code{log(lambda)} (default) or its
-negative if \code{sign.lambda=-1}.}
+\item{sign.lambda}{Either plot against \code{log(lambda)} or its
+negative if \code{sign.lambda=-1} (default).}
 
 \item{\dots}{Other graphical parameters to plot}
 

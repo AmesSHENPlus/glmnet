@@ -3,7 +3,8 @@
 #' @rdname plot.glmnet
 #' @export
 plot.relaxed <-
-    function(x,xvar = c("lambda", "dev"), label = FALSE, gamma=1,
+    function(x,xvar = c("lambda", "dev"),
+             label = FALSE, sign.lambda=-1, gamma=1,
              ...) {
         xvar=match.arg(xvar)
         if(any(wh<-gamma<0)){
@@ -15,9 +16,9 @@ plot.relaxed <-
             gamma=gamma[!wh]
         }
         if(!length(gamma))stop("no valid values of gamma")
-        for(i in seq(along=length(gamma))){
-            bfit=blend.relaxed(x,gamma=gamma[i],extend=FALSE)
-            plot(bfit,xvar=xvar,label=label,...)
+        for(g in gamma){
+            bfit=blend.relaxed(x,gamma=g,extend=FALSE)
+            plot(bfit,xvar=xvar,label=label,sign.lambda=sign.lambda,...)
             }
     }
 

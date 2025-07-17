@@ -4,7 +4,7 @@
 #' default is \code{TRUE}
 #' @rdname plot.cv.glmnet
 #' @export
-plot.cv.relaxed <- function (x, se.bands=TRUE,...)
+plot.cv.relaxed <- function (x, se.bands=TRUE, sign.lambda=-1,...)
 {
     xr=x$relaxed
     oldpar = par(mar = c(4, 4, 3, 4))
@@ -12,32 +12,34 @@ plot.cv.relaxed <- function (x, se.bands=TRUE,...)
     statlist=xr$statlist
     gamma=xr$gamma
     ngamma=length(gamma)
+    xlab = if(sign.lambda<0)
+               expression(-Log(lambda))
+           else
+               expression(Log(lambda))
+
     ylim=range(unlist(lapply(statlist,"[[","cvm")))
     if(se.bands){
         cvup=lapply(statlist,"[[","cvup")
         cvlo=lapply(statlist,"[[","cvlo")
         ylim=range(ylim,unlist(cvup),unlist(cvlo))
         }
-    xlim=log(range(unlist(lapply(statlist,"[[","lambda")))+0.00001)
+    xlim= range(log(unlist(lapply(statlist,"[[","lambda"))+0.00001)*sign.lambda)
     cvcolors = rainbow(ngamma, start = .1, end = 1)
-     with(statlist[[ngamma]],plot(log(lambda), cvm, type = "n", xlab = expression(Log(lambda)),
+     with(statlist[[ngamma]],plot(sign.lambda*log(lambda), cvm, type = "n", xlab=xlab,
                                  ylab = x$name,ylim=ylim,xlim=xlim))
     if(se.bands){
         for (i in seq(ngamma))
-            with(statlist[[i]],polygon(c(log(lambda),rev(log(lambda))),c(cvup,rev(cvlo)),
+            with(statlist[[i]],polygon(c(sign.lambda*log(lambda),rev(sign.lambda*log(lambda))),c(cvup,rev(cvlo)),
                                        col="floralwhite",border="antiquewhite"))
     }
     for (i in seq(ngamma))
-        with(statlist[[i]],lines(log(lambda), cvm, lwd = 2, col = cvcolors[i]))
-    mins=log(c(xr$lambda.min,xr$lambda.1se))
+        with(statlist[[i]],lines(sign.lambda*log(lambda), cvm, lwd = 2, col = cvcolors[i]))
+    mins=log(c(xr$lambda.min,xr$lambda.1se))*sign.lambda
     abline(v=mins,lty=3)
     dof= statlist[[1]]$nzero
     lambda=statlist[[1]]$lambda
-    axis(side = 3, at = log(lambda), labels = paste(dof),
+    axis(side = 3, at = sign.lambda*log(lambda), labels = paste(dof),
          tick = FALSE, line = 0)
-
-#    dof=c(x$nzero.min,x$nzero.1se)
-#    axis(3, at = mins, labels = format(dof), tick=FALSE, line = 0,cex.axis=.9)
     colorlegend(posy = c(0.2, 0.8), posx = c(0.93, 0.945)-.03, col = rainbow(ngamma,
         start = 0.1, end = 1), zlim = c(0, 1), zval = gamma , main = expression(gamma),digit=2)
     invisible()

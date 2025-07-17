@@ -4,7 +4,7 @@
 #' @rdname plot.glmnet
 #' @export
 plot.mrelnet <-
-  function(x, xvar=c("lambda","norm","dev"),label=FALSE,type.coef=c("coef","2norm"),...){
+  function(x, xvar=c("lambda","norm","dev"),label=FALSE,sign.lambda=-1,type.coef=c("coef","2norm"),...){
     type.coef=match.arg(type.coef)
     xvar=match.arg(xvar)
     beta=x$beta
@@ -21,10 +21,10 @@ plot.mrelnet <-
       ncl=nrow(dfmat)
       clnames=rownames(dfmat)
       for( i in seq(ncl)){
-        plotCoef(beta[[i]],norm,x$lambda,dfmat[i,],x$dev.ratio,label=label,xvar=xvar,ylab=paste("Coefficients: Response",clnames[i]),...)
+        plotCoef(beta[[i]],norm,x$lambda,dfmat[i,],x$dev.ratio,label=label,xvar=xvar,sign.lambda=sign.lambda,ylab=paste("Coefficients: Response",clnames[i]),...)
       }
     }
     else
-        plotCoef(coefnorm(beta,2),norm,x$lambda,dfmat[1,],x$dev.ratio,label=label,xvar=xvar,ylab="Coefficient 2Norms",...)
+        plotCoef(coefnorm(beta,2),norm,x$lambda,dfmat[1,],x$dev.ratio,label=label,xvar=xvar,sign.lambda=sign.lambda,ylab="Coefficient 2Norms",...)
 
   }

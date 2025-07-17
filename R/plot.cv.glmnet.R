@@ -9,8 +9,8 @@
 #'
 #' @aliases plot.cv.glmnet
 #' @param x fitted \code{"cv.glmnet"} object
-#' @param sign.lambda Either plot against \code{log(lambda)} (default) or its
-#' negative if \code{sign.lambda=-1}.
+#' @param sign.lambda Either plot against \code{log(lambda)} or its
+#' negative if \code{sign.lambda=-1} (default).
 #' @param \dots Other graphical parameters to plot
 #' @author Jerome Friedman, Trevor Hastie and Rob Tibshirani\cr Maintainer:
 #' Trevor Hastie <hastie@@stanford.edu>
@@ -51,19 +51,18 @@
 #'
 #' @method plot cv.glmnet
 #' @export
-plot.cv.glmnet=function(x,sign.lambda=1,...){
+plot.cv.glmnet=function(x,sign.lambda=-1,...){
     cvobj=x
-    xlab = expression(Log(lambda))
-#  xlab="log(Lambda)"
-  if(sign.lambda<0)xlab=paste("-",xlab,sep="")
+    xlab = if(sign.lambda<0)
+               expression(-Log(lambda))
+           else
+               expression(Log(lambda))
   plot.args=list(x=sign.lambda*log(cvobj$lambda),y=cvobj$cvm,ylim=range(cvobj$cvup,cvobj$cvlo),xlab=xlab,ylab=cvobj$name,type="n")
   new.args=list(...)
   if(length(new.args))plot.args[names(new.args)]=new.args
 do.call("plot",plot.args)
     error.bars(sign.lambda*log(cvobj$lambda),cvobj$cvup,cvobj$cvlo,width=0.01,
                col="darkgrey")
-#               col="antiquewhite2")
-
     points(sign.lambda*log(cvobj$lambda),cvobj$cvm,pch=20,
           col="red")
 axis(side=3,at=sign.lambda*log(cvobj$lambda),labels=paste(cvobj$nz),tick=FALSE,line=0)

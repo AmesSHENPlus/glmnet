@@ -8,12 +8,19 @@
 \alias{plot.relaxed}
 \title{plot coefficients from a "glmnet" object}
 \usage{
-\method{plot}{glmnet}(x, xvar = c("lambda", "norm", "dev"), label = FALSE, ...)
+\method{plot}{glmnet}(
+  x,
+  xvar = c("lambda", "norm", "dev"),
+  label = FALSE,
+  sign.lambda = -1,
+  ...
+)
 
 \method{plot}{mrelnet}(
   x,
   xvar = c("lambda", "norm", "dev"),
   label = FALSE,
+  sign.lambda = -1,
   type.coef = c("coef", "2norm"),
   ...
 )
@@ -22,11 +29,19 @@
   x,
   xvar = c("lambda", "norm", "dev"),
   label = FALSE,
+  sign.lambda = -1,
   type.coef = c("coef", "2norm"),
   ...
 )
 
-\method{plot}{relaxed}(x, xvar = c("lambda", "dev"), label = FALSE, gamma = 1, ...)
+\method{plot}{relaxed}(
+  x,
+  xvar = c("lambda", "dev"),
+  label = FALSE,
+  sign.lambda = -1,
+  gamma = 1,
+  ...
+)
 }
 \arguments{
 \item{x}{fitted \code{"glmnet"} model}
@@ -37,6 +52,8 @@
 
 \item{label}{If \code{TRUE}, label the curves with variable sequence
 numbers.}
+
+\item{sign.lambda}{If \code{xvar="lambda"} and \code{sign.lambda=1} then we plot against \code{log(lambda)}; if  \code{sign.lambda=-1} (default) we plot against \code{-log(lambda)}.}
 
 \item{\dots}{Other graphical parameters to plot}
 
